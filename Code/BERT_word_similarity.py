@@ -33,3 +33,8 @@ word1 = "cat"
 word2 = "dog"
 similarity = calculate_similarity(word1, word2)
 print(f"Similarity between '{word1}' and '{word2}': {similarity:.4f}")
+
+
+
+# Output:
+# Similarity between 'cat' and 'dog': 0.9665
