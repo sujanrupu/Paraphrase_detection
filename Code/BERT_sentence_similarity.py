@@ -33,3 +33,10 @@ sentence1 = "The quick brown fox jumps over the lazy dog."
 sentence2 = "A fast brown fox leaps over a sleepy canine."
 similarity = calculate_similarity(sentence1, sentence2)
 print(f"Similarity between Sentence 1 and Sentence 2: {similarity:.4f}")
+
+
+
+
+# Output:
+
+# Similarity between Sentence 1 and Sentence 2: 0.9530
