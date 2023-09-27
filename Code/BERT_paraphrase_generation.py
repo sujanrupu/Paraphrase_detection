@@ -50,3 +50,17 @@ print(input_sentence)
 print("\nGenerated Paraphrases:")
 for i, paraphrase in enumerate(paraphrases):
     print(f"{i+1}. {paraphrase}")
+
+
+
+
+# Output:
+# Original Sentence:
+# The quick brown fox jumps over the lazy dog.
+
+# Generated Paraphrases:
+# 1. the quick browned fox bound over the faineant andiron .
+# 2. the flying brown play_a_trick_on jump over the lazy dog .
+# 3. the flying Brown pull_a_fast_one_on rise o'er the work-shy hotdog .
+# 4. the quick Brown fox parachuting ended the otiose detent .
+# 5. the prompt Brown Charles_James_Fox stick_out over the faineant click .
