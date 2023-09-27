@@ -46,3 +46,32 @@ for i in range(len(sentences)):
     for j in range(len(sentences)):
         print(f"Similarity between Sentence {i+1} and Sentence {j+1}: {similarities[i][j]}")
 
+
+
+
+# Output:
+#Similarity between Sentence 1 and Sentence 1: 1.0000000000000002
+#Similarity between Sentence 1 and Sentence 2: 0.32410557530638356
+#Similarity between Sentence 1 and Sentence 3: 0.10653615303211826
+#Similarity between Sentence 1 and Sentence 4: 0.2549468749113887 
+#Similarity between Sentence 1 and Sentence 5: 0.36875390199142066
+#Similarity between Sentence 2 and Sentence 1: 0.32410557530638356
+#Similarity between Sentence 2 and Sentence 2: 1.0000000000000002
+#Similarity between Sentence 2 and Sentence 3: 0.15402169916901404
+#Similarity between Sentence 2 and Sentence 4: 0.10977352233949632
+#Similarity between Sentence 2 and Sentence 5: 0.33400411489426723
+#Similarity between Sentence 3 and Sentence 1: 0.10653615303211826
+#Similarity between Sentence 3 and Sentence 2: 0.15402169916901404
+#Similarity between Sentence 3 and Sentence 3: 0.9999999999999998
+#Similarity between Sentence 3 and Sentence 4: 0.12575358900221129
+#Similarity between Sentence 3 and Sentence 5: -0.004833370785682675
+#Similarity between Sentence 4 and Sentence 1: 0.2549468749113887
+#Similarity between Sentence 4 and Sentence 2: 0.10977352233949632
+#Similarity between Sentence 4 and Sentence 3: 0.12575358900221129
+#Similarity between Sentence 4 and Sentence 4: 1.0000000000000004
+#Similarity between Sentence 4 and Sentence 5: 0.24471492254355748
+#Similarity between Sentence 5 and Sentence 1: 0.36875390199142066
+#Similarity between Sentence 5 and Sentence 2: 0.3340041148942672
+#Similarity between Sentence 5 and Sentence 3: -0.0048333707856826474
+#Similarity between Sentence 5 and Sentence 4: 0.2447149225435575
+#Similarity between Sentence 5 and Sentence 5: 1.0000000000000004
