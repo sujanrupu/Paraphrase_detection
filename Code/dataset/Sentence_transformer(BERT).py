@@ -47,4 +47,4 @@ average_similarity /= len(lines_file1)
 print("Average Cosine Similarity (using BERT):", average_similarity)
 
 
-# Average Cosine Similarity (using BERT): 97.1153025344064%
+# Average Cosine Similarity (using BERT): 93.1153025344064%
