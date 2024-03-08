@@ -58,4 +58,4 @@ accuracy = calculate_accuracy(file1_lines, file2_lines, word2vec_model)
 print(f'Semantic Similarity Accuracy: {accuracy}')
 
 
-# Semantic Similarity Accuracy: 98.21716308713199%
+# Semantic Similarity Accuracy: 91.21716308713199%
