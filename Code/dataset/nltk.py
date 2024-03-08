@@ -49,4 +49,4 @@ print("Average Cosine Similarity (using USE):", average_similarity)
 
 
 
-# Average similairty: 88.4119%
+# Average similairty: 86.4119%
