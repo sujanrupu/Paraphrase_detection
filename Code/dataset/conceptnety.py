@@ -68,4 +68,4 @@ average_similarity = sum(similarity_scores) / len(similarity_scores)
 print(f'Semantic Similarity Accuracy: {average_similarity}')
 
 
-## Semantic Similarity Accuracy: 68.6315%
+## Semantic Similarity Accuracy: 72.6315%
