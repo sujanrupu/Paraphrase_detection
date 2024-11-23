@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraphrase Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #E5E7EB;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .purple-button {
+            background-color: #6B46C1;
+            color: white;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+        }
+
+        .purple-button:hover {
+            background-color: #5A32A3;
+        }
+
+        #keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* Increased gap between keyword boxes */
+            justify-content: center;
+        }
+
+        .keyword-box {
+            background-color: #6B46C1;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+            margin: 0.5rem;
+            width: 100%;
+            max-width: 600px;
+            word-wrap: break-word;
+            text-align: center;
+        }
+
+        .table-heading {
+            background-color: #6B46C1;
+            color: white;
+        }
+
+        .table-row:nth-child(odd) {
+            background-color: #7C3AED;
+        }
+
+        .table-row:nth-child(even) {
+            background-color: #6B46C1;
+        }
+
+        input,
+        button {
+            background-color: #1F2937;
+            color: #E5E7EB;
+            border: 1px solid #4B5563;
+            width: 100%;
+            margin: 10px auto;
+            padding: 0.75rem;
+            max-width: 600px;
+            border-radius: 0.375rem;
+        }
+
+        input:focus,
+        button:focus {
+            outline: none;
+            border-color: #6B46C1;
+        }
+
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 3px dotted #FFF;
+            border-style: solid solid dotted dotted;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            box-sizing: border-box;
+            animation: rotation 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        .loader::after {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px dotted #FF3D00;
+            border-style: solid solid dotted;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            animation: rotationBack 1s linear infinite;
+            transform-origin: center center;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotationBack {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-semibold text-center mb-6">Paraphrase Generator</h1>
+
+        <div class="flex justify-center items-center h-full">
+            <div class="space-y-4 w-full max-w-lg">
+                <input type="text" id="sentence" placeholder="Enter a sentence to paraphrase"
+                    class="block w-full p-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <input type="number" id="num-paraphrases" placeholder="Number of paraphrases"
+                    class="block w-full p-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                <button onclick="generateParaphrases()" class="block w-full purple-button">Generate Paraphrases</button>
+            </div>
+        </div>
+
+        <div class="mt-6 hidden" id="keywords-section">
+            <h3 class="text-xl font-semibold">Extracted Keywords:</h3>
+            <div id="keywords"></div>
+        </div>
+
+        <div class="mt-6 hidden" id="paraphrases-section">
+            <h3 class="text-xl font-semibold">Paraphrases:</h3>
+
+            <div class="flex justify-center">
+                <table class="w-full max-w-3xl table-auto mt-4 border-collapse hidden" id="results-table">
+                    <thead>
+                        <tr class="table-heading">
+                            <th class="px-4 py-2 border text-center">Sl. No.</th>
+                            <th class="px-4 py-2 border text-center">Paraphrase</th>
+                            <th class="px-4 py-2 border text-center">Similarity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Loader Section -->
+        <div id="loader" class="hidden">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <script>
+        function generateParaphrases() {
+            const sentence = document.getElementById('sentence').value;
+            const numParaphrases = document.getElementById('num-paraphrases').value || 3;
+
+            // Hide previous results
+            document.getElementById('results-table').classList.add('hidden');
+            document.getElementById('keywords-section').classList.add('hidden');
+            document.getElementById('paraphrases-section').classList.add('hidden');
+
+            // Show loader while waiting for response
+            document.getElementById('loader').classList.remove('hidden');
+
+            axios.post('http://localhost:5000/paraphrase', {
+                sentence: sentence,
+                num_paraphrases: numParaphrases
+            })
+                .then(response => {
+                    const results = response.data;
+                    const paraphrasesContainer = document.getElementById('results');
+                    const keywordsContainer = document.getElementById('keywords');
+
+                    paraphrasesContainer.innerHTML = '';
+                    keywordsContainer.innerHTML = '';
+
+                    results.keywords.forEach(keyword => {
+                        const keywordBox = document.createElement('div');
+                        keywordBox.classList.add('keyword-box');
+                        keywordBox.textContent = keyword;
+                        keywordsContainer.appendChild(keywordBox);
+                    });
+
+
+                    results.paraphrases.forEach((item, index) => {
+                        paraphrasesContainer.innerHTML += ` 
+                        <tr class="table-row">
+                            <td class="px-4 py-2 border text-center">${index + 1}</td>
+                            <td class="px-4 py-2 border text-center">${item.text}</td>
+                            <td class="px-4 py-2 border text-center">${item.similarity}</td>
+                        </tr>
+                    `;
+                    });
+
+                    // Hide loader and show the results
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('results-table').classList.remove('hidden');
+                    document.getElementById('keywords-section').classList.remove('hidden');
+                    document.getElementById('paraphrases-section').classList.remove('hidden');
+                })
+                .catch(error => {
+                    alert('Error generating paraphrases');
+                    // Hide loader in case of error
+                    document.getElementById('loader').classList.add('hidden');
+                });
+        }
+    </script>
+</body>
+
+</html>
